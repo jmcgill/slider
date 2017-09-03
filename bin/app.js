@@ -4,7 +4,6 @@ const chalk = require('chalk');
 const path = require('path');
 const commander = require('commander');
 const log = require('js-logging').colorConsole();
-const png = require('console-png').attachTo(console);
 const indentString = require('indent-string');
 const table = require('text-table');
 
