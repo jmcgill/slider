@@ -7,20 +7,18 @@
     "bluebird": "*",
     "chalk": "^2.0.1",
     "commander": "^2.11.0",
-    "console-png": "^1.2.1",
     "gift": "git+https://git@github.com/jmcgill/gift.git#jimmy/build",
-    "git-promise": "^0.3.1",
     "github": "*",
     "indent-string": "^3.2.0",
     "js-logging": "^0.1.0",
-    "lowdb": "*",
-    "octonode": "*",
-    "sleep-promise": "^2.0.0",
     "text-table": "^0.2.0",
-    "tilde-path": "^2.0.0"
+    "tilde-path": "^2.0.0",
+    "underscore": "^1.8.3"
   },
   "scripts": {
-    "test": "mocha ./*-test.js"
+    "test": "mocha ./*-test.js",
+    "prettier": "prettier --single-quote --trailing-comma all --write '{.,lib,bin}/**/*.js'",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "eslint": "^4.6.0",
