@@ -9,7 +9,7 @@ const table = require('text-table');
 
 const GithubWalker = require('../lib/github-walker.js');
 
-var header = `
+const header = `
       ___                                                   ___           ___     
      /$__$                                   _____         /$__$         /$  $    
     /:/ _/_                     ___         /::$  $       /:/ _/_       /::$  $   
@@ -37,8 +37,8 @@ function initialize() {
 }
 
 function printDiff(preamble, diff) {
-  var parts = diff.split('\n');
-  for (var part of parts) {
+  const parts = diff.split('\n');
+  for (const part of parts) {
     if (part.startsWith('+++')) {
       console.log(preamble, chalk.green(part));
     } else if (part.startsWith('---')) {
@@ -49,7 +49,7 @@ function printDiff(preamble, diff) {
   }
 }
 
-var config = {
+const config = {
   options: {
     id: 'test12',
   },
@@ -60,7 +60,7 @@ var config = {
 
     return 5;
   },
-  reviewers: function(root) {
+  reviewers(root) {
     return ['plexer'];
   },
 };
@@ -78,9 +78,9 @@ var config = {
   const walker = new GithubWalker(
     /short/,
     path.join(os.homedir(), '.slider'),
-    config
+    config,
   );
-  var r = await walker.walk({
+  const r = await walker.walk({
     user: 'jmcgill',
   });
 
@@ -88,7 +88,7 @@ var config = {
 
   for (var url in r) {
     console.log(chalk.blue.bold(url));
-    for (var diff in r[url].status) {
+    for (const diff in r[url].status) {
       console.log('    ', chalk.magenta.bold(diff));
       printDiff('       ', r[url].status[diff]);
     }
@@ -99,14 +99,14 @@ var config = {
   }
 
   // Print status table
-  var rows = [];
+  const rows = [];
   for (var url in r) {
-    var status = chalk.green('COMPLETE');
+    let status = chalk.green('COMPLETE');
     if (r[url].pullRequest) {
       status = chalk.red('PENDING REVIEW');
     }
 
-    var pullRequestUrl = '';
+    let pullRequestUrl = '';
     if (r[url].pullRequest) {
       pullRequestUrl = r[url].pullRequest.url;
     }
@@ -115,4 +115,4 @@ var config = {
   }
 
   console.log(table(rows));
-})();
+}());
