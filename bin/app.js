@@ -65,50 +65,50 @@ var config = {
     }
 };
 
-(function main() {
+(async function main() {
     initialize();
-
-    // var image = fs.readFileSync('/Users/jmcgill/slider.png');
-    // console.png(image);
 
     commander.version('0.1.0')
         .option('-e, --expression', 'Expression')
         .option('-d, --dryrun', 'Dry run')
         .parse(process.argv);
 
-    var walker = new GithubWalker(/short/, path.join(os.homedir(), '.slider'), config);
-    walker.walk({
+    // TODO(jimmy): Enable Dry Runs.
+    const walker = new GithubWalker(/short/, path.join(os.homedir(), '.slider'), config);
+    var r = await walker.walk({
         user: "jmcgill"
-    }).then(function (r) {
-        for (var url in r) {
-            console.log(chalk.blue.bold(url));
-            for (var diff in r[url].status) {
-                console.log('    ', chalk.magenta.bold(diff));
-                printDiff('       ', r[url].status[diff]);
-            }
-            console.log('\n');
-            console.log('    ', chalk.magenta.bold('Slider Output'));
-            console.log(indentString(JSON.stringify(r[url].result), 8));
-            console.log('\n');
-        }
-
-
-        // Print status table
-        var rows = [];
-        for (var url in r) {
-            var status = chalk.green('COMPLETE');
-            if (r[url].pullRequest) {
-                status = chalk.red('PENDING REVIEW');
-            }
-
-            var pullRequestUrl = '';
-            if (r[url].pullRequest) {
-                pullRequestUrl = r[url].pullRequest.url;
-            }
-
-            rows.push([chalk.blue(url), status, pullRequestUrl]);
-        }
-
-        console.log(table(rows));
     });
+
+    console.log('CALLING THEN WITH ', r);
+
+    for (var url in r) {
+        console.log(chalk.blue.bold(url));
+        for (var diff in r[url].status) {
+            console.log('    ', chalk.magenta.bold(diff));
+            printDiff('       ', r[url].status[diff]);
+        }
+        console.log('\n');
+        console.log('    ', chalk.magenta.bold('Slider Output'));
+        console.log(indentString(JSON.stringify(r[url].result), 8));
+        console.log('\n');
+    }
+
+
+    // Print status table
+    var rows = [];
+    for (var url in r) {
+        var status = chalk.green('COMPLETE');
+        if (r[url].pullRequest) {
+            status = chalk.red('PENDING REVIEW');
+        }
+
+        var pullRequestUrl = '';
+        if (r[url].pullRequest) {
+            pullRequestUrl = r[url].pullRequest.url;
+        }
+
+        rows.push([chalk.blue(url), status, pullRequestUrl]);
+    }
+
+    console.log(table(rows));
 })();
